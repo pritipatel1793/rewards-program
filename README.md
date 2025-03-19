@@ -1,17 +1,67 @@
-# Rewards Calculator API
+# Spring Boot Rewards Calculator
 
-A Spring Boot application that calculates reward points for customers based on their purchase transactions.
+A Spring Boot application that calculates reward points for customer transactions based on the following rules:
+- 2 points for every dollar spent over $100 in each transaction
+- 1 point for every dollar spent between $50 and $100 in each transaction
 
 ## Features
 
-- Calculate reward points for customers based on transaction amounts
-- Points calculation rules:
-  - 2 points for every dollar spent over $100 in each transaction
-  - 1 point for every dollar spent between $50 and $100 in each transaction
-- Monthly and total points calculation for the last three months
-- RESTful API endpoints
-- H2 in-memory database for development
-- Comprehensive test coverage
+- RESTful API endpoints for customer and transaction management
+- H2 in-memory database for data storage
+- Exception handling with custom exceptions
+- Lombok for reducing boilerplate code
+- Swagger UI for API documentation
+
+## API Endpoints
+
+### Customer Endpoints
+- `GET /api/customers` - Get all customers
+- `GET /api/customers/{id}` - Get customer by ID
+- `POST /api/customers` - Create a new customer
+- `PUT /api/customers/{id}` - Update customer
+- `DELETE /api/customers/{id}` - Delete customer
+
+### Rewards Endpoints
+- `GET /api/rewards/customer/{id}/total` - Get total rewards points for a customer
+- `GET /api/rewards/customer/{id}/monthly` - Get monthly rewards points for a customer
+
+## Technologies Used
+
+- Java 17
+- Spring Boot 3.2.3
+- Spring Data JPA
+- H2 Database
+- Lombok
+- Maven
+
+## Getting Started
+
+1. Clone the repository
+2. Make sure you have Java 17 and Maven installed
+3. Run the application:
+   ```bash
+   mvn spring-boot:run
+   ```
+4. Access the application at `http://localhost:8080`
+5. Access H2 Console at `http://localhost:8080/h2-console`
+   - JDBC URL: `jdbc:h2:mem:rewardsdb`
+   - Username: `SA`
+   - Password: (leave empty)
+
+## Testing the API
+
+You can test the API endpoints using curl or any API testing tool like Postman. Example:
+
+```bash
+# Get all customers
+curl http://localhost:8080/api/customers
+
+# Get total rewards for a customer
+curl http://localhost:8080/api/rewards/customer/1/total
+
+# Get monthly rewards for a customer
+curl http://localhost:8080/api/rewards/customer/1/monthly
+```
 
 ## Project Structure
 
@@ -33,64 +83,6 @@ src/main/java/com/rewards/
 │   └── MonthlyRewardPoints.java
 └── config/
     └── DataInitializer.java
-```
-
-## API Endpoints
-
-### Get Customer Rewards
-```
-GET /api/rewards/{customerId}
-```
-
-Returns the reward points for a specific customer, including:
-- Monthly breakdown of points
-- Total points for the last three months
-
-Example Response:
-```json
-{
-    "customerId": 1,
-    "customerName": "John Doe",
-    "monthlyPoints": [
-        {
-            "month": "March 2024",
-            "points": 90
-        },
-        {
-            "month": "February 2024",
-            "points": 25
-        }
-    ],
-    "totalPoints": 115
-}
-```
-
-## Setup and Running
-
-1. Prerequisites:
-   - Java 17 or higher
-   - Maven
-
-2. Build the project:
-   ```bash
-   mvn clean install
-   ```
-
-3. Run the application:
-   ```bash
-   mvn spring-boot:run
-   ```
-
-4. Access the application:
-   - API: http://localhost:8080/api/rewards
-   - H2 Console: http://localhost:8080/h2-console
-
-## Testing
-
-The project includes unit tests for the service layer. Run the tests using:
-
-```bash
-mvn test
 ```
 
 ## Development
