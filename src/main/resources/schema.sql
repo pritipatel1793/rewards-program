@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS customer (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS transaction (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    customer_id BIGINT NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    timestamp TIMESTAMP NOT NULL,
+    FOREIGN KEY (customer_id) REFERENCES customer(id)
+); 

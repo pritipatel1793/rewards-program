@@ -52,45 +52,84 @@ class RewardsServiceTest {
     }
     
     @Test
-    void calculateRewardPoints_WithValidCustomer_ReturnsCorrectPoints() {
+    void calculateMonthlyRewardPoints_WithValidCustomer_ReturnsCorrectPoints() {
         // Arrange
         when(customerRepository.findById(1L)).thenReturn(java.util.Optional.of(customer));
         when(transactionRepository.findByCustomerIdAndTimestampGreaterThanEqual(anyLong(), any()))
             .thenReturn(transactions);
         
         // Act
-        Map<String, Object> result = rewardsService.calculateRewardPoints(1L);
+        Map<String, Object> result = rewardsService.calculateMonthlyRewardPoints(1L);
         
         // Assert
         assertNotNull(result);
         assertEquals(1L, result.get("customerId"));
         assertEquals("John Doe", result.get("customerName"));
-        assertTrue(((BigDecimal) result.get("totalPoints")).compareTo(BigDecimal.ZERO) > 0);
-        assertFalse(((List<?>) result.get("monthlyPoints")).isEmpty());
+        assertFalse(((Map<?, ?>) result.get("monthlyPoints")).isEmpty());
     }
     
     @Test
-    void calculateRewardPoints_WithInvalidCustomer_ThrowsException() {
+    void calculateTotalRewardPoints_WithValidCustomer_ReturnsCorrectPoints() {
+        // Arrange
+        when(customerRepository.findById(1L)).thenReturn(java.util.Optional.of(customer));
+        when(transactionRepository.findByCustomerIdAndTimestampGreaterThanEqual(anyLong(), any()))
+            .thenReturn(transactions);
+        
+        // Act
+        Map<String, Object> result = rewardsService.calculateTotalRewardPoints(1L);
+        
+        // Assert
+        assertNotNull(result);
+        assertEquals(1L, result.get("customerId"));
+        assertEquals("John Doe", result.get("customerName"));
+        assertTrue((Integer) result.get("totalPoints") > 0);
+    }
+    
+    @Test
+    void calculateMonthlyRewardPoints_WithInvalidCustomer_ThrowsException() {
         // Arrange
         when(customerRepository.findById(999L)).thenReturn(java.util.Optional.empty());
         
         // Act & Assert
-        assertThrows(RuntimeException.class, () -> rewardsService.calculateRewardPoints(999L));
+        assertThrows(RuntimeException.class, () -> rewardsService.calculateMonthlyRewardPoints(999L));
     }
     
     @Test
-    void calculateRewardPoints_WithNoTransactions_ReturnsZeroPoints() {
+    void calculateTotalRewardPoints_WithInvalidCustomer_ThrowsException() {
+        // Arrange
+        when(customerRepository.findById(999L)).thenReturn(java.util.Optional.empty());
+        
+        // Act & Assert
+        assertThrows(RuntimeException.class, () -> rewardsService.calculateTotalRewardPoints(999L));
+    }
+    
+    @Test
+    void calculateMonthlyRewardPoints_WithNoTransactions_ReturnsEmptyMap() {
         // Arrange
         when(customerRepository.findById(1L)).thenReturn(java.util.Optional.of(customer));
         when(transactionRepository.findByCustomerIdAndTimestampGreaterThanEqual(anyLong(), any()))
             .thenReturn(List.of());
         
         // Act
-        Map<String, Object> result = rewardsService.calculateRewardPoints(1L);
+        Map<String, Object> result = rewardsService.calculateMonthlyRewardPoints(1L);
         
         // Assert
         assertNotNull(result);
-        assertEquals(BigDecimal.ZERO, result.get("totalPoints"));
-        assertTrue(((List<?>) result.get("monthlyPoints")).isEmpty());
+        assertTrue(((Map<?, ?>) result.get("monthlyPoints")).isEmpty());
+    }
+    
+    @Test
+    void calculateTotalRewardPoints_WithNoTransactions_ReturnsZeroPoints() {
+        // Arrange
+        when(customerRepository.findById(1L)).thenReturn(java.util.Optional.of(customer));
+        when(transactionRepository.findByCustomerIdAndTimestampGreaterThanEqual(anyLong(), any()))
+            .thenReturn(List.of());
+        
+        // Act
+        Map<String, Object> result = rewardsService.calculateTotalRewardPoints(1L);
+        
+        // Assert
+        assertNotNull(result);
+        assertEquals(0, result.get("totalPoints"));
     }
 } 
