@@ -1,7 +1,7 @@
 -- Insert sample customers
-INSERT INTO customer (name, email) VALUES ('Priti', 'priti@example.com');
-INSERT INTO customer (name, email) VALUES ('Riya', 'riya@example.com');
-INSERT INTO customer (name, email) VALUES ('Ashish', 'ashish@example.com');
+INSERT INTO customer (name, email) VALUES ('Priti', 'priti@gmail.com');
+INSERT INTO customer (name, email) VALUES ('Riya', 'riya@gmail.com');
+INSERT INTO customer (name, email) VALUES ('Ashish', 'ashish@gmail.com');
 
 -- Insert sample transactions for Priti (customer_id = 1)
 INSERT INTO transaction (customer_id, amount, timestamp) VALUES (1, 120.00, '2025-03-15 10:00:00');

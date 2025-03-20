@@ -29,13 +29,13 @@ public class DataInitializer {
         return args -> {
             // Create customers
             Customer customer1 = new Customer();
-            customer1.setName("John Doe");
-            customer1.setEmail("john@example.com");
+            customer1.setName("priti");
+            customer1.setEmail("priti@gmail.com");
             customerRepository.save(customer1);
             
             Customer customer2 = new Customer();
-            customer2.setName("Jane Smith");
-            customer2.setEmail("jane@example.com");
+            customer2.setName("riya");
+            customer2.setEmail("riya@gmail.com");
             customerRepository.save(customer2);
             
             // Create transactions for customer1

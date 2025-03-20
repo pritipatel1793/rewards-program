@@ -131,8 +131,4 @@ src/main/java/com/rewards/
     ├── CustomerNotFoundException.java
     ├── InvalidInputException.java
     └── GlobalExceptionHandler.java
-```
-
-## License
-
-This project is licensed under the MIT License. 
+``` 
